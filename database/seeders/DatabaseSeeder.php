@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,12 +13,48 @@ class DatabaseSeeder extends Seeder
      * Seed the application's database.
      */
     public function run(): void
-    {
-        // User::factory(10)->create();
+    { // Create admin user
+        User::create([
+            'name' => 'Admin User',
+            'email' => 'admin@example.com',
+            'password' => Hash::make('password'),
+            'role' => 'admin',
+        ]);
+
+        // Create regular user
+        User::create([
+            'name' => 'Regular User',
+            'email' => 'user@example.com',
+            'password' => Hash::make('password'),
+            'role' => 'user',
+        ]);
 
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        // Create sample books
+        $books = [
+            [
+                'BookId' => 'To Kill a Mockingbird',
+                'Title' => 'Harper Lee',
+                'Author' => 'Fiction',
+                'Category' => 'A classic novel about racial injustice in the American South.',
+            ],
+            [
+                'BookId' => '1984',
+                'Title' => 'George Orwell',
+                'Author' => 'Dystopian',
+                'Category' => 'A dystopian novel about totalitarianism and surveillance.',
+            ],
+            [
+                'BookId' => 'The Great Gatsby',
+                'Title' => 'F. Scott Fitzgerald',
+                'Author' => 'Fiction',
+                'Category' => 'A novel about the American Dream in the Jazz Age.',
+            ],
+        ];
+
     }
 }

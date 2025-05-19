@@ -17,10 +17,11 @@ class BorrowBook extends Model
     protected $dateFormat = 'M-d-y H:i:s';
 
     protected $fillable = [
-        'book_id',
         'user_id',
-        'borrowed_at',
-        'returned_at',
+        'book_id',
+        'borrow_date',
+        'due_date',
+        'return_date',
         'status',
     ];
 
@@ -30,31 +31,109 @@ class BorrowBook extends Model
     ];
 
     protected $casts = [
-        'borrowed_at' => 'datetime',
-        'returned_at' => 'datetime',
+        'borrow_date' => 'date',
+        'due_date' => 'date',
+        'return_date' => 'date',
     ];
+    /**
+     * Get the user that owns the borrowing.
+     */
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class);
     }
+
+    /**
+     * Get the book that is borrowed.
+     */
     public function book()
     {
-        return $this->belongsTo(Book::class, 'book_id');
+        return $this->belongsTo(Book::class);
     }
-    public function getStatusAttribute($value)
+
+    /**
+     * Check if the borrowing is overdue.
+     *
+     * @return bool
+     */
+    public function isOverdue()
     {
-        return $value ? 'Returned' : 'Not Returned';
+        return $this->return_date === null && now()->gt($this->due_date);
     }
-    public function setStatusAttribute($value)
+    /**
+     * Check if the book is returned.
+     *
+     * @return bool
+     */
+    public function isReturned()
     {
-        $this->attributes['status'] = $value ? 1 : 0;
+        return $this->status === 'returned';
     }
-    public function getBorrowedAtAttribute($value)
+    /**
+     * Check if the book is active.
+     *
+     * @return bool
+     */
+    public function isActive()
     {
-        return \Carbon\Carbon::parse($value)->format('M-d-y H:i:s');
+        return $this->status === 'active';
     }
-    public function setBorrowedAtAttribute($value)
+    /**
+     * Check if the book is overdue.
+     *
+     * @return bool
+     */
+    public function isActiveOrOverdue()
     {
-        $this->attributes['borrowed_at'] = \Carbon\Carbon::parse($value)->format('M-d-y H:i:s');
-    }   
+        return $this->isActive() || $this->isOverdue();
+    }
+    
+    /**
+     * Get the borrow date in a formatted way.
+     *
+     * @return string
+     */
+    public function getFormattedBorrowDate()
+    {
+        return $this->borrow_date->format('M d, Y');
+    }
+    /**
+     * Get the due date in a formatted way.
+     *
+     * @return string
+     */
+    public function getFormattedDueDate()
+    {
+        return $this->due_date->format('M d, Y');
+    }
+    /**
+     * Get the return date in a formatted way.
+     *
+     * @return string|null
+     */
+    public function getFormattedReturnDate()
+    {
+        return $this->return_date ? $this->return_date->format('M d, Y') : null;
+    }
+    /**
+     * Get the status of the borrowing.
+     *
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+
+
+
+
+
+    
+
+
+
+    
+
 }

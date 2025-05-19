@@ -8,12 +8,14 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('borrows', function (Blueprint $table) {
-            $table->id('Borrow_Id');
-            $table->foreignId('User_Id')->references('Student_Id')->on('students')->onDelete('cascade');
-            $table->foreignId('Book_Id')->references('Book_Id')->on('books')->onDelete('cascade');
-            $table->date('Borrow_Date');
-            $table->date('Return_Date')->nullable();
+        Schema::create('borrow books', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('book_id')->constrained()->onDelete('cascade');
+            $table->date('borrow_date');
+            $table->date('due_date');
+            $table->date('return_date')->nullable();
+            $table->enum('status', ['active', 'overdue', 'returned'])->default('active');
             $table->timestamps();
         });
     }
@@ -23,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('borrows');
+        Schema::dropIfExists('borrow books');
     }
 };

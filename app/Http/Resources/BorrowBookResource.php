@@ -17,20 +17,24 @@ class BorrowBookResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $book = $this->resource;
-        $bookDetails = Book::find($book->book_id);
+        $bookDetails = Book::find($this->book_id);
+
         return [
             'id' => $this->id,
-            'book_id' => $this->book_id,
             'user_id' => $this->user_id,
-            'borrowed_at' => $this->created_at,
-            'returned_at' => $this->updated_at,
-            'book_details' => [
-                'title' => $bookDetails ? $bookDetails->title : null,
-                'author' => $bookDetails ? $bookDetails->author : null,
-                'category' => $bookDetails ? $bookDetails->category : null,
-            ],
+            'book_id' => $this->book_id,
+            'borrow_date' => $this->borrow_date,
+            'due_date' => $this->due_date,
+            'return_date' => $this->return_date,
+            'status' => $this->status,
+            'book_details' => $bookDetails ? [
+                'title' => $bookDetails->title,
+                'author' => $bookDetails->author,
+                'category' => $bookDetails->category,
+            ] : null,
         ];
-        //return parent::toArray($request);
+        foreach ($books as $book) {
+            Book::create($book);
+        }
     }
 }
