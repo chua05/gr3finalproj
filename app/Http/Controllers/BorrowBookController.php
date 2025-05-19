@@ -19,10 +19,10 @@ class BorrowBookController extends Controller
     public function index()
     {
         // Fetch all borrowed books from the database
-        $borrowedBooks = DB::table('borrowed_books')
-            ->join('books', 'borrowed_books.book_id', '=', 'books.id')
-            ->select('borrowed_books.*', 'books.title', 'books.author', 'books.category')
-            ->where('borrowed_books.user_id', Auth::id())
+        $borrowedBooks = DB::table('borrows')
+            ->join('books', 'borrows.book_id', '=', 'books.id')
+            ->select('borrows.*', 'books.title', 'books.author', 'books.category')
+            ->where('borrows.user_id', Auth::id())
             ->get();
 
         // Return a success response with the list of borrowed books
@@ -46,7 +46,7 @@ class BorrowBookController extends Controller
         }
 
         // Create a new borrowed book record
-        DB::table('borrowed_books')->insert([
+        DB::table('borrows')->insert([
             'book_id' => $request->book_id,
             'user_id' => Auth::id(),
             'created_at' => now(),
@@ -61,18 +61,18 @@ class BorrowBookController extends Controller
     public function show($id)
     {
         // Find the borrowed book by ID
-        $borrowedBook = DB::table('borrowed_books')
-            ->join('books', 'borrowed_books.book_id', '=', 'books.id')
-            ->select('borrowed_books.*', 'books.title', 'books.author', 'books.category')
-            ->where('borrowed_books.id', $id)
-            ->where('borrowed_books.user_id', Auth::id())
+        $borrowedBook = DB::table('borrows')
+            ->join('books', 'borrows.book_id', '=', 'books.id')
+            ->select('borrows.*', 'books.title', 'books.author', 'books.category')
+            ->where('borrows.id', $id)
+            ->where('borrows.user_id', Auth::id())
             ->first();
 
         if (!$borrowedBook) {
             return response()->json(['message' => 'Borrowed book not found'], 404);
         }
 
-        // Return a success response with the borrowed book data
+        // Return a success response with the borrowed data
         return response()->json([
             'message' => 'Borrowed book retrieved successfully',
             'data' => $borrowedBook
@@ -92,8 +92,8 @@ class BorrowBookController extends Controller
             ], 422);
         }
 
-        // Update the borrowed book record
-        DB::table('borrowed_books')
+        // Update the borrowed record
+        DB::table('borrows')
             ->where('id', $id)
             ->where('user_id', Auth::id())
             ->update([
@@ -109,7 +109,7 @@ class BorrowBookController extends Controller
     public function destroy($id)
     {
         // Delete the borrowed book record
-        DB::table('borrowed_books')
+        DB::table('borrows')
             ->where('id', $id)
             ->where('user_id', Auth::id())
             ->delete();
@@ -122,7 +122,7 @@ class BorrowBookController extends Controller
     public function returnBook($id)
     {
         // Find the borrowed book by ID
-        $borrowedBook = DB::table('borrowed_books')
+        $borrowedBook = DB::table('borrows')
             ->where('id', $id)
             ->where('user_id', Auth::id())
             ->first();
@@ -132,7 +132,7 @@ class BorrowBookController extends Controller
         }
 
         // Update the returned_at timestamp
-        DB::table('borrowed_books')
+        DB::table('borrows')
             ->where('id', $id)
             ->update([
                 'returned_at' => now(),
@@ -143,13 +143,13 @@ class BorrowBookController extends Controller
             'message' => 'Book returned successfully',
         ], 200);
     }
-    public function getBorrowedBooks()
+    public function getBorrows()
     {
         // Fetch all borrowed books from the database
-        $borrowedBooks = DB::table('borrowed_books')
-            ->join('books', 'borrowed_books.book_id', '=', 'books.id')
-            ->select('borrowed_books.*', 'books.title', 'books.author', 'books.category')
-            ->where('borrowed_books.user_id', Auth::id())
+        $borrowedBooks = DB::table('borrows')
+            ->join('books', 'borrows.book_id', '=', 'books.id')
+            ->select('borrows.*', 'books.title', 'books.author', 'books.category')
+            ->where('borrows.user_id', Auth::id())
             ->get();
 
         // Return a success response with the list of borrowed books
@@ -161,11 +161,11 @@ class BorrowBookController extends Controller
     public function getBorrowedBook($id)
     {
         // Find the borrowed book by ID
-        $borrowedBook = DB::table('borrowed_books')
-            ->join('books', 'borrowed_books.book_id', '=', 'books.id')
-            ->select('borrowed_books.*', 'books.title', 'books.author', 'books.category')
-            ->where('borrowed_books.id', $id)
-            ->where('borrowed_books.user_id', Auth::id())
+        $borrowedBook = DB::table('borrows')
+            ->join('books', 'borrows.book_id', '=', 'books.id')
+            ->select('borrows.*', 'books.title', 'books.author', 'books.category')
+            ->where('borrows.id', $id)
+            ->where('borrows.user_id', Auth::id())
             ->first();
 
         if (!$borrowedBook) {
@@ -181,10 +181,10 @@ class BorrowBookController extends Controller
     public function getBorrowedBooksByUser($userId)
     {
         // Fetch all borrowed books for a specific user from the database
-        $borrowedBooks = DB::table('borrowed_books')
-            ->join('books', 'borrowed_books.book_id', '=', 'books.id')
-            ->select('borrowed_books.*', 'books.title', 'books.author', 'books.category')
-            ->where('borrowed_books.user_id', $userId)
+        $borrowedBooks = DB::table('borrows')
+            ->join('books', 'borrows.book_id', '=', 'books.id')
+            ->select('borrows.*', 'books.title', 'books.author', 'books.category')
+            ->where('borrows.user_id', $userId)
             ->get();
 
         // Return a success response with the list of borrowed books

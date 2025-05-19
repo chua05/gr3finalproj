@@ -9,7 +9,7 @@ class BorrowBook extends Model
 {
     use HasFactory;
 
-    protected $table = 'borrow_books';
+    protected $table = 'borrows';
     protected $primaryKey = 'id';
     public $timestamps = true;
     public $incrementing = true;
