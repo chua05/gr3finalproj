@@ -41,19 +41,7 @@ class DatabaseSeeder extends Seeder
                 'Title' => 'Harper Lee',
                 'Author' => 'Fiction',
                 'Category' => 'A classic novel about racial injustice in the American South.',
-            ],
-            [
-                'BookId' => '1984',
-                'Title' => 'George Orwell',
-                'Author' => 'Dystopian',
-                'Category' => 'A dystopian novel about totalitarianism and surveillance.',
-            ],
-            [
-                'BookId' => 'The Great Gatsby',
-                'Title' => 'F. Scott Fitzgerald',
-                'Author' => 'Fiction',
-                'Category' => 'A novel about the American Dream in the Jazz Age.',
-            ],
+            ]
         ];
 
     }
