@@ -7,7 +7,7 @@ use App\Http\Controllers\API\BorrowBookController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\AdminController;
 
-// Root API route (Fix for GET /api)
+// Root API route (no auth)
 Route::get('/', function () {
     return response()->json([
         'message' => 'Welcome to the API root',
@@ -16,7 +16,7 @@ Route::get('/', function () {
     ]);
 });
 
-// Public Routes
+// Public Routes (no auth)
 Route::get('/status', function () {
     return response()->json([
         'status' => 'operational',
@@ -45,29 +45,35 @@ Route::get('/endpoints', function () {
     ]);
 });
 
+// Public book listing route (no auth) - for testing GET /api/books
+Route::get('/books', [BookController::class, 'index']);
+
+// Sanctum CSRF cookie route
 Route::get('/sanctum/csrf-cookie', function (Request $request) {
     return response()->noContent();
 });
 
+// Auth routes (no middleware)
 Route::post('/auth/change-password', [UserController::class, 'changePassword']);
 
-// Authenticated Routes
+// Routes requiring authentication
 Route::middleware(['auth:sanctum'])->group(function () {
 
     // USER ROUTES
     Route::prefix('users')->group(function () {
         Route::put('/{user}', [UserController::class, 'update'])->name('users.update');
-        Route::get('/{user}', [UserController::class, 'show'])->name('admin.users.show');
-        Route::delete('/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+        Route::get('/{user}', [UserController::class, 'show'])->name('users.show');
+        Route::delete('/{user}', [UserController::class, 'destroy'])->name('users.destroy');
     });
 
-    // BOOK ROUTES (For all authenticated users)
+    // BOOK ROUTES (Authenticated users)
     Route::prefix('books')->group(function () {
-        Route::get('/', [BookController::class, 'index'])->name('books.index');
+        // Already have public GET /books
         Route::get('/{book}', [BookController::class, 'show'])->name('books.show');
         
         // Borrowing books
         Route::post('/{book}/borrow', [BorrowBookController::class, 'borrow'])->name('books.borrow');
+    
     });
 
     // ADMIN ROUTES
@@ -75,9 +81,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
         // Dashboard Stats
         Route::get('/dashboard-stats', [AdminController::class, 'dashboardStats'])->name('admin.dashboard.stats');
 
-        // Book Management (for Admin)
+        // Admin Book Management
         Route::prefix('books')->group(function () {
-            Route::get('/', [BookController::class, 'adminIndex'])->name('admin.books.index');
+            Route::get('/', [BookController::class, 'index'])->name('admin.books.index'); // changed from adminIndex
             Route::post('/', [BookController::class, 'store'])->name('admin.books.store');
             Route::get('/{book}', [BookController::class, 'show'])->name('admin.books.show');
             Route::put('/{book}', [BookController::class, 'update'])->name('admin.books.update');
@@ -87,3 +93,4 @@ Route::middleware(['auth:sanctum'])->group(function () {
         // User Management (for Admin) — Already covered under /users
     });
 });
+

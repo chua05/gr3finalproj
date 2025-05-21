@@ -11,14 +11,14 @@ class Book extends Model
 
     protected $table = 'books';
 
-    protected $primaryKey = 'BookId';
+    protected $primaryKey = 'id';
 
     public $incrementing = true;
     protected $keyType = 'int';
 
     protected $fillable = [
-        'title',
-        'author',
-        'category',
+        'Title',
+        'Author',
+        'Category',
     ];
 }
