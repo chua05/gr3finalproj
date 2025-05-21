@@ -7,12 +7,41 @@ use App\Http\Controllers\API\BorrowBookController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\AdminController;
 
+// Root API route (Fix for GET /api)
+Route::get('/', function () {
+    return response()->json([
+        'message' => 'Welcome to the API root',
+        'status' => 'success',
+        'timestamp' => now()->toDateTimeString(),
+    ]);
+});
+
 // Public Routes
 Route::get('/status', function () {
     return response()->json([
         'status' => 'operational',
         'version' => '1.0.0',
         'timestamp' => now()->toDateTimeString(),
+    ]);
+});
+
+// 🔍 Add this to list available public endpoints
+Route::get('/endpoints', function () {
+    return response()->json([
+        'available_endpoints' => [
+            'GET /api/status',
+            'GET /api/endpoints',
+            'POST /api/auth/change-password',
+            'GET /api/books',
+            'POST /api/books/{book}/borrow',
+            'PUT /api/users/{user}',
+            'GET /api/users/{user}',
+            'DELETE /api/users/{user}',
+            'GET /api/admin/dashboard-stats',
+            'POST /api/admin/books',
+            'PUT /api/admin/books/{book}',
+            'DELETE /api/admin/books/{book}',
+        ]
     ]);
 });
 
@@ -58,4 +87,3 @@ Route::middleware(['auth:sanctum'])->group(function () {
         // User Management (for Admin) — Already covered under /users
     });
 });
-
