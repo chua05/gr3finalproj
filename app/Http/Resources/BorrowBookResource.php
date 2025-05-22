@@ -33,8 +33,6 @@ class BorrowBookResource extends JsonResource
                 'category' => $bookDetails->category,
             ] : null,
         ];
-        foreach ($books as $book) {
-            Book::create($book);
-        }
+        
     }
 }
