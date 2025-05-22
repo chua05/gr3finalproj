@@ -18,9 +18,9 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->boolean('is_admin')->default(false);
+            $table->enum('role', ['admin', 'user'])->default('user'); // moved above
             $table->rememberToken();
             $table->timestamps();
-            $table->enum('role', ['admin', 'user'])->default('user'); 
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
@@ -44,8 +44,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
+        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('users');
     }
 };
