@@ -24,9 +24,10 @@ class BookController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'Title' => 'required|string|max:255',
-            'Author' => 'required|string|max:255',
-            'Category' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
+            'author' => 'required|string|max:255',
+            'category' => 'required|string|max:255',
+            'description' => 'nullable|string',
         ]);
 
         if ($validator->fails()) {
@@ -36,7 +37,7 @@ class BookController extends Controller
             ], 422);
         }
 
-        $book = Book::create($request->only(['title', 'author', 'category']));
+        $book = Book::create($request->only(['title', 'author', 'category', 'description']));
 
         // Return a success response with the created book data
         return response()->json([
@@ -59,9 +60,9 @@ class BookController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'Title' => 'required|string|max:255',
-            'Author' => 'required|string|max:255',
-            'Category' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
+            'author' => 'required|string|max:255',
+            'category' => 'required|string|max:255',
         ]);
 
         if ($validator->fails()) {

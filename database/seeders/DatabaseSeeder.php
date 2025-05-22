@@ -14,36 +14,46 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create admin user
-        User::create([
-            'name' => 'Admin User',
-            'email' => 'admin@example.com',
-            'password' => 'password', // Will be hashed by User model accessor
-            'role' => 'admin',
-        ]);
+        // Create or update admin user
+        User::updateOrCreate(
+            ['email' => 'admin@example.com'],
+            [
+                'name' => 'Admin User',
+                'password' => Hash::make('password'),
+                'role' => 'admin',
+            ]
+        );
 
-        // Create regular user
-        User::create([
-            'name' => 'Regular User',
-            'email' => 'user@example.com',
-            'password' => 'password',
-            'role' => 'user',
-        ]);
+        // Create or update regular user
+        User::updateOrCreate(
+            ['email' => 'user@example.com'],
+            [
+                'name' => 'Regular User',
+                'password' => Hash::make('password'),
+                'role' => 'user',
+            ]
+        );
 
-        // Create test user via factory
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // Create or update test user
+        User::updateOrCreate(
+            ['email' => 'test@example.com'],
+            [
+                'name' => 'Test User',
+                'password' => Hash::make('password'),
+                'role' => 'user',
+            ]
+        );
 
-        // Create sample books
-        Book::create([
-            'title' => 'To Kill a Mockingbird',
-            'author' => 'Harper Lee',
-            'category' => 'Fiction',
-            'description' => 'A classic novel about racial injustice in the American South.',
-        ]);
+        // Create or update a sample book
+        Book::updateOrCreate(
+            ['title' => 'To Kill a Mockingbird'],
+            [
+                'author' => 'Harper Lee',
+                'category' => 'Fiction',
+                'description' => 'A classic novel about racial injustice in the American South.',
+            ]
+        );
 
-        // Add more books as needed...
+        // Add more books as needed with updateOrCreate or create
     }
 }
