@@ -25,6 +25,7 @@ class UserController extends Controller
                     'name' => 'required|string|max:255',
                     'email' => 'required|string|max:255',
                     'password' => 'required|string|max:255',
+                    'role' => 'required|string|max:255',
         
                 ]);
         if($validator->fails())
@@ -40,6 +41,7 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => $request->password,
+            'role' => $request->role,
         ]);
 
         // Return a success response with the created user data
@@ -59,6 +61,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|max:255',
             'password' => 'required|string|max:255',
+            'role' => 'required|string|max:255',
         ]);
         if($validator->fails())
         {
@@ -73,6 +76,7 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => $request->password,
+            'role' => $request->role,
         ]);
 
         // Return a success response with the updated user data
