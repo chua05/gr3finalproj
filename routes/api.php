@@ -53,8 +53,15 @@ Route::get('/sanctum/csrf-cookie', function (Request $request) {
     return response()->noContent();
 });
 
+// Public RESTful book routes (no auth)
+Route::apiResource('books', BookController::class);
+
 // Auth routes (no middleware)
 Route::post('/auth/change-password', [UserController::class, 'changePassword']);
+
+// Public user routes (no auth)
+Route::get('/users', [UserController::class, 'index']);   // List all users
+Route::post('/users', [UserController::class, 'store']);  // Create a new user
 
 // Routes requiring authentication
 Route::middleware(['auth:sanctum'])->group(function () {
