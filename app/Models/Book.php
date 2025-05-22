@@ -17,8 +17,8 @@ class Book extends Model
     protected $keyType = 'int';
 
     protected $fillable = [
-        'Title',
-        'Author',
-        'Category',
+        'title',
+        'author',
+        'category',
     ];
 }
