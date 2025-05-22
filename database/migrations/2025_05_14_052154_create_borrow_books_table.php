@@ -6,6 +6,15 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    public function down(): void
+    {
+        Schema::table('borrow_books', function (Blueprint $table) {
+            $table->dropForeign(['book_id']);
+        });
+        Schema::dropIfExists('borrow_books');
+        Schema::dropIfExists('books');
+    }
+
     public function up(): void
     {
         Schema::create('borrow_books', function (Blueprint $table) {
@@ -23,8 +32,5 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down(): void
-    {
-        Schema::dropIfExists('borrow books');
-    }
+ 
 };

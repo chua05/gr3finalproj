@@ -16,10 +16,11 @@ class BookResource extends JsonResource
     {
         // Return the book data in a structured format
         return [
-            'Bookid' => $this->id,
-            'Title' => $this->title,
-            'Author' => $this->author,
-            'Category' => $this->category,
+            'id' => $this->id,
+            'title' => $this->title,
+            'author' => $this->author,
+            'category' => $this->category,
+            'description' => $this->description,
         ];
     }
 }
