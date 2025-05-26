@@ -39,10 +39,10 @@ Route::get('/', function () {
                     'DELETE /api/books/{id}' => 'Delete book (admin)',
                     'POST /api/books/{id}/borrow' => 'Borrow a book',
                 ],
-                'transactions' => [
-                    'GET /api/transactions' => 'List user transactions',
-                    'GET /api/transactions/{id}' => 'Get transaction details',
-                    'POST /api/transactions/{id}/return' => 'Return a book',
+                'borrow_books' => [
+                    'GET /api/borrow-books' => 'List user borrowings',
+                    'GET /api/borrow-books/{id}' => 'Get borrowing details',
+                    'POST /api/borrow-books/{id}/return' => 'Return a book',
                 ],
                 'users' => [
                     'GET /api/admin/users' => 'List users (admin)',
